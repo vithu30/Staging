@@ -77,34 +77,6 @@ public class HttpHandler {
     }
 
 
-    public String post(String url, String object) {
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        HttpPost request = new HttpPost(this.backendUrl + url);
-        request.addHeader("Accept", "application/json");
-        String encodedCredentials = this.encode(this.backendUsername + ":" + this.backendPassword);
-        request.addHeader("Authorization", "Basic " + encodedCredentials);
-        request.addHeader("Content-Type", "application/json");
-        String responseString = null;
-
-        try {
-            StringEntity entity = new StringEntity(object);
-            request.setEntity(entity);
-            HttpResponse response = httpClient.execute(request);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Request successful for " + url);
-            }
-            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-
-        } catch (IllegalStateException e) {
-            logger.error("The response is empty ");
-        } catch (NullPointerException e) {
-            logger.error("Bad request to the URL");
-        } catch (IOException e) {
-            logger.error("The request was unsuccessful with dss");
-        }
-        return responseString;
-    }
-
 
     private String encode(String text) {
         String returnString = null;

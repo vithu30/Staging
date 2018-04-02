@@ -1,9 +1,14 @@
 package org.wso2.external_contributions.serverlets;
 
 import org.apache.log4j.Logger;
+import org.wso2.external_contributions.TrustStoreGenerator;
 import org.wso2.external_contributions.msf4jhttp.HttpHandler;
 
 import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +23,22 @@ public class Issues extends HttpServlet {
     private static final Logger logger = Logger.getLogger(PullRequests.class);
 
     @Override
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+        TrustStoreGenerator trustStoreGenerator = new TrustStoreGenerator();
+        try {
+            trustStoreGenerator.setSslSystemProperties();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (UnrecoverableKeyException e) {
+            e.printStackTrace();
+        }
         try {
             HttpHandler httpHandler  = new HttpHandler();
             logger.info("Request backend to fetch issues");

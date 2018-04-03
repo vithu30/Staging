@@ -86,7 +86,7 @@ public class HttpHandler {
 
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-        String path = "/home/vithursa/Documents/ballerina-0.964.0/bre/security/ballerinaTruststore.p12";
+        String path = "/home/vithursa/Documents/ballerina-0.964.0/bre/security/ballerina_keystore.jks";
         String password = "ballerina";
         KeyStore keyStore = KeyStore.getInstance("jks");
         InputStream inputStream = new FileInputStream(path);

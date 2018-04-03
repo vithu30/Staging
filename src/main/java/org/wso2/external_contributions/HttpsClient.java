@@ -10,7 +10,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 public class HttpsClient {
-    final static String path = "/home/vithursa/Documents/ballerina-0.964.0/bre/security/ballerinaTruststore.p12";
+    final static String path = "/home/vithursa/Documents/ballerina-0.964.0/bre/security/final.p12";
     final static String password = "ballerina";
 
     final static String serverName = "localhost";

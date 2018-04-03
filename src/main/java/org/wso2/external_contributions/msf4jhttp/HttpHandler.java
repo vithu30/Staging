@@ -22,15 +22,23 @@ package org.wso2.external_contributions.msf4jhttp;
 import com.google.common.io.BaseEncoding;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.ssl.SSLContexts;
+import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 /*
  * Handle get post request to backend
@@ -49,12 +57,44 @@ public class HttpHandler {
         this.backendUrl = propertyReader.getBackendUrl();
     }
 
-    public String get(String url) {
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+//    public String get(String url) {
+//        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+//        HttpGet request = new HttpGet(this.backendUrl + url);
+//        request.addHeader("Accept", "application/json");
+//        String encodedCredentials = this.encode(this.backendUsername + ":" + this.backendPassword);
+//        request.addHeader("Authorization", "Basic " + encodedCredentials);
+//        String responseString = null;
+//
+//        try {
+//
+//            HttpResponse response = httpClient.execute(request);
+//            if (logger.isDebugEnabled()) {
+//                logger.debug("Request successful for " + url);
+//            }
+//            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+//
+//        } catch (IllegalStateException e) {
+//            logger.error("The response is empty ");
+//        } catch (NullPointerException e) {
+//            logger.error("Bad request to the URL");
+//        } catch (IOException e) {
+//            logger.error("mke");
+//        }
+//
+//        return responseString;
+//    }
+
+    public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        String path = "/home/vithursa/Documents/ballerina-0.964.0/bre/security/ballerinaTruststore.p12";
+        String password = "ballerina";
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        InputStream inputStream = new FileInputStream(path);
+        keyStore.load(inputStream,password.toCharArray());
+        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build()));
+        CloseableHttpClient httpClient = httpClientBuilder.build();
         HttpGet request = new HttpGet(this.backendUrl + url);
         request.addHeader("Accept", "application/json");
-        String encodedCredentials = this.encode(this.backendUsername + ":" + this.backendPassword);
-        request.addHeader("Authorization", "Basic " + encodedCredentials);
         String responseString = null;
 
         try {
@@ -72,8 +112,25 @@ public class HttpHandler {
         } catch (IOException e) {
             logger.error("mke");
         }
-
         return responseString;
+
+
+//        String urlString = "https://localhost:9097/issues";
+//        URL url = new URL(urlString);
+//        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+//        httpsURLConnection.setRequestMethod("GET");
+//        httpsURLConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml");
+//        httpsURLConnection.setRequestProperty("Accept-Language", "it-IT,it");
+
+        // Create a SSL SocketFactory
+//        SSLContext context = SSLContext.getInstance("TLS");
+//        context.init(null, null, null);
+//        SSLSocketFactory sslSocketFactory = context.getSocketFactory();
+//        httpsURLConnection.setSSLSocketFactory(sslSocketFactory);
+//
+////        logger.info("HTTP Response Code {}", httpsURLConnection.getResponseCode());
+//
+//        Certificate[] serverCertificate = httpsURLConnection.getServerCertificates();
     }
 
 

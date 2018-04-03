@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 @WebServlet(
         name = "pullRequests",
@@ -23,7 +27,7 @@ public class PullRequests extends HttpServlet {
         try {
             HttpHandler httpHandler = new HttpHandler();
             logger.info("Requesting backend ");
-            String backResponse = httpHandler.get("/BallerinaService/pullRequests");
+            String backResponse = httpHandler.httpsGet("/BallerinaService/pullRequests");
             logger.info("Got: " + backResponse);
 //            response.setHeader("Access-Control-Allow-Origin", "*");
 //            response.setHeader("credentials", "same origin");
@@ -36,6 +40,14 @@ public class PullRequests extends HttpServlet {
 
         } catch (IOException e) {
             logger.error("The response output stream failed");
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
         }
     }
 }

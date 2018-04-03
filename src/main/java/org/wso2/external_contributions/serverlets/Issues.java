@@ -1,13 +1,12 @@
 package org.wso2.external_contributions.serverlets;
 
 import org.apache.log4j.Logger;
-import org.wso2.external_contributions.TrustStoreGenerator;
 import org.wso2.external_contributions.msf4jhttp.HttpHandler;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -25,30 +24,24 @@ public class Issues extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
-        TrustStoreGenerator trustStoreGenerator = new TrustStoreGenerator();
-        try {
-            trustStoreGenerator.setSslSystemProperties();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
-        }
         try {
             HttpHandler httpHandler  = new HttpHandler();
             logger.info("Request backend to fetch issues");
-            String response = httpHandler.get("BallerinaService/issues");
+            String response = httpHandler.httpsGet("BallerinaService/issues");
             logger.info("Got: " + response);
             httpServletResponse.setContentType("application/json;charset=UTF-8");
             ServletOutputStream out = httpServletResponse.getOutputStream();
             out.print(response);
         }catch (IOException e){
             logger.error("The response output stream failed");
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
         }
     }
 }

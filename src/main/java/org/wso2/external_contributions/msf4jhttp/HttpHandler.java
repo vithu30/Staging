@@ -137,24 +137,6 @@ public class HttpHandler {
             logger.error("mke");
         }
         return responseString;
-
-
-//        String urlString = "https://localhost:9097/issues";
-//        URL url = new URL(urlString);
-//        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-//        httpsURLConnection.setRequestMethod("GET");
-//        httpsURLConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml");
-//        httpsURLConnection.setRequestProperty("Accept-Language", "it-IT,it");
-
-        // Create a SSL SocketFactory
-//        SSLContext context = SSLContext.getInstance("TLS");
-//        context.init(null, null, null);
-//        SSLSocketFactory sslSocketFactory = context.getSocketFactory();
-//        httpsURLConnection.setSSLSocketFactory(sslSocketFactory);
-//
-////        logger.info("HTTP Response Code {}", httpsURLConnection.getResponseCode());
-//
-//        Certificate[] serverCertificate = httpsURLConnection.getServerCertificates();
     }
 
 

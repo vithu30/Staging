@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
         urlPatterns = "/issueSummary"
 )
 public class SummaryOfIssues extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(PullRequests.class);
+    private static final Logger logger = Logger.getLogger(SummaryOfIssues.class);
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){

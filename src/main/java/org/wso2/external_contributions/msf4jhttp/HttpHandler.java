@@ -26,7 +26,6 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.ssl.SSLContexts;
-import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
@@ -85,8 +84,9 @@ public class HttpHandler {
 //    }
 
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
+        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-        String path = "/home/vithursa/Documents/ballerina-0.964.0/bre/security/final.p12";
+        String path = "/home/vithursa/Documents/ballerina-0.964.0/bre/security/clientTruststore.p12";
         String password = "ballerina";
         KeyStore keyStore = KeyStore.getInstance("jks");
         InputStream inputStream = new FileInputStream(path);

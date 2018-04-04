@@ -1,5 +1,6 @@
 package org.wso2.external_contributions.serverlets;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.wso2.external_contributions.msf4jhttp.HttpHandler;
 
@@ -19,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
         urlPatterns = "/issues"
 )
 public class Issues extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(PullRequests.class);
+    private static final Logger logger = Logger.getLogger(Issues.class);
+
 
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {

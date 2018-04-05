@@ -68,33 +68,33 @@ public class HttpHandler {
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
 ////        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 
-//        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-//        InputStream file = Thread.currentThread().getContextClassLoader()
-//                .getResourceAsStream(propertyReader.getTrustStoreFile());
-//        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-//        //loading key store with password
-//        keyStore.load(file, propertyReader.getTrustStorePassword().toCharArray());
-//        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
-//                .loadTrustMaterial(keyStore,null).build()));
-//        CloseableHttpClient httpClient = httpClientBuilder.build();
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        InputStream file = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream(propertyReader.getTrustStoreFile());
+        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+
+        keyStore.load(file, propertyReader.getTrustStorePassword().toCharArray());
+        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
+                .loadTrustMaterial(keyStore,null).build()));
+        CloseableHttpClient httpClient = httpClientBuilder.build();
 
 
-        SSLContext sslContext = null;
-        try{
-            sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
-        } catch (NoSuchAlgorithmException  e){
-            logger.error(e);
-        } catch (KeyStoreException e){
-            logger.error(e);
-        } catch (KeyManagementException e){
-            logger.error(e);
-        }
-        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
-
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLSocketFactory(sslConnectionSocketFactory)
-                .build();
+//        SSLContext sslContext = null;
+//        try{
+//            sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
+//        } catch (NoSuchAlgorithmException  e){
+//            logger.error(e);
+//        } catch (KeyStoreException e){
+//            logger.error(e);
+//        } catch (KeyManagementException e){
+//            logger.error(e);
+//        }
+//        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+//        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
+//
+//        CloseableHttpClient httpClient = HttpClients.custom()
+//                .setSSLSocketFactory(sslConnectionSocketFactory)
+//                .build();
 
 
         HttpGet request = new HttpGet(this.backendUrl + url);

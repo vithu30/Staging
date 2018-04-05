@@ -72,9 +72,9 @@ public class HttpHandler {
 //        KeyStore keyStore = KeyStore.getInstance("jks");
 //        InputStream inputStream = new FileInputStream(path);
 //        keyStore.load(inputStream,password.toCharArray());
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyReader.getTrustStoreFile());
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(inputStream,trustStorePassword.toCharArray());
+//        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyReader.getTrustStoreFile());
+//        KeyStore keyStore = KeyStore.getInstance("jks");
+//        keyStore.load(inputStream,trustStorePassword.toCharArray());
 
         SSLContext sslContext = null;
         try{

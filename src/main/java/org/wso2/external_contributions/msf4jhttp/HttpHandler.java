@@ -79,9 +79,13 @@ public class HttpHandler {
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 
         keyStore.load(file, propertyReader.getTrustStorePassword().toCharArray());
-        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
-                .loadTrustMaterial(keyStore,null).build()));
-        CloseableHttpClient httpClient = httpClientBuilder.build();
+        SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keyStore,null).build();
+        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
+
+//        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
+//                .loadTrustMaterial(keyStore,null).build()));
+//        CloseableHttpClient httpClient = httpClientBuilder.build();
 
 
 //        SSLContext sslContext = null;
@@ -97,9 +101,9 @@ public class HttpHandler {
 //        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
 //        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
 //
-//        CloseableHttpClient httpClient = HttpClients.custom()
-//                .setSSLSocketFactory(sslConnectionSocketFactory)
-//                .build();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(sslConnectionSocketFactory)
+                .build();
 
 
         HttpGet request = new HttpGet(this.backendUrl + url);

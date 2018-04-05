@@ -68,51 +68,34 @@ public class HttpHandler {
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
 ////        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-
-        InputStream file = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream(propertyReader.getTrustStoreFile());
-        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        //loading key store with password
-        keyStore.load(file, propertyReader.getTrustStorePassword().toCharArray());
-        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-
-
-//        String path = "/home/vithursa/server.p12";
-//        String password = "ballerina";
-//        KeyStore keyStore = KeyStore.getInstance("jks");
-//        InputStream inputStream = new FileInputStream(path);
-//        keyStore.load(inputStream,password.toCharArray());
-
-        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
-                .loadTrustMaterial(keyStore,null).build()));
-
+//        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+//        InputStream file = Thread.currentThread().getContextClassLoader()
+//                .getResourceAsStream(propertyReader.getTrustStoreFile());
+//        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+//        //loading key store with password
+//        keyStore.load(file, propertyReader.getTrustStorePassword().toCharArray());
+//        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
+//                .loadTrustMaterial(keyStore,null).build()));
 //        CloseableHttpClient httpClient = httpClientBuilder.build();
-//        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyReader.getTrustStoreFile());
-//        KeyStore keyStore = KeyStore.getInstance("jks");
-//        keyStore.load(inputStream,trustStorePassword.toCharArray());
-
-//        SSLContext sslContext = null;
-//        try{
-//            sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
-//        } catch (NoSuchAlgorithmException  e){
-//            logger.error(e);
-//        } catch (KeyStoreException e){
-//            logger.error(e);
-//        } catch (KeyManagementException e){
-//            logger.error(e);
-//        }
-//        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-//        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
 
 
+        SSLContext sslContext = null;
+        try{
+            sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
+        } catch (NoSuchAlgorithmException  e){
+            logger.error(e);
+        } catch (KeyStoreException e){
+            logger.error(e);
+        } catch (KeyManagementException e){
+            logger.error(e);
+        }
+        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
 
-        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build(),allowAllHosts));
-        CloseableHttpClient httpClient = httpClientBuilder.build();
-//  httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory().SocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build()));
-//        CloseableHttpClient httpClient = HttpClients.custom()
-//                .setSSLSocketFactory(sslConnectionSocketFactory)
-//                .build();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(sslConnectionSocketFactory)
+                .build();
+
 
         HttpGet request = new HttpGet(this.backendUrl + url);
         request.addHeader("Accept", "application/json");
@@ -135,35 +118,6 @@ public class HttpHandler {
         }
         return responseString;
     }
-
-
-//    public String post(String url, String object) {
-//        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-//        HttpPost request = new HttpPost(this.backendUrl + url);
-//        request.addHeader("Accept", "application/json");
-//        String encodedCredentials = this.encode(this.backendUsername + ":" + this.backendPassword);
-//        request.addHeader("Authorization", "Basic " + encodedCredentials);
-//        request.addHeader("Content-Type", "application/json");
-//        String responseString = null;
-//
-//        try {
-//            StringEntity entity = new StringEntity(object);
-//            request.setEntity(entity);
-//            HttpResponse response = httpClient.execute(request);
-//            if (logger.isDebugEnabled()) {
-//                logger.debug("Request successful for " + url);
-//            }
-//            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-//
-//        } catch (IllegalStateException e) {
-//            logger.error("The response is empty ");
-//        } catch (NullPointerException e) {
-//            logger.error("Bad request to the URL");
-//        } catch (IOException e) {
-//            logger.error("The request was unsuccessful with dss");
-//        }
-//        return responseString;
-//    }
 
 
     private String encode(String text) {

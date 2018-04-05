@@ -68,6 +68,11 @@ public class HttpHandler {
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
 ////        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 
+        System.setProperty("javax.net.ssl.trustStore", propertyReader.getTrustStoreFile());
+        System.setProperty("javax.net.ssl.trustStorePassword", propertyReader.getTrustStorePassword());
+        System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
+//        System.setProperty("carbon.repo.write.mode", "true");
+
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
         InputStream file = Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream(propertyReader.getTrustStoreFile());

@@ -42,6 +42,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.Properties;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
@@ -66,40 +67,40 @@ public class HttpHandler {
 
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
 ////        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
-//        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-//        String path = "/home/vithursa/client.p12";
-//        String password = "ballerina";
-//        KeyStore keyStore = KeyStore.getInstance("jks");
-//        InputStream inputStream = new FileInputStream(path);
-//        keyStore.load(inputStream,password.toCharArray());
-//        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
-//                .loadTrustMaterial(keyStore,null).build()));
-//
-//        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build())).build();
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        String path = "/home/vithursa/server.p12";
+        String password = "ballerina";
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        InputStream inputStream = new FileInputStream(path);
+        keyStore.load(inputStream,password.toCharArray());
+        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
+                .loadTrustMaterial(keyStore,null).build()));
+
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build())).build();
 //        CloseableHttpClient httpClient = httpClientBuilder.build();
 //        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyReader.getTrustStoreFile());
 //        KeyStore keyStore = KeyStore.getInstance("jks");
 //        keyStore.load(inputStream,trustStorePassword.toCharArray());
 
-        SSLContext sslContext = null;
-        try{
-            sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
-        } catch (NoSuchAlgorithmException  e){
-            logger.error(e);
-        } catch (KeyStoreException e){
-            logger.error(e);
-        } catch (KeyManagementException e){
-            logger.error(e);
-        }
-        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
+//        SSLContext sslContext = null;
+//        try{
+//            sslContext = SSLContextBuilder.create().loadTrustMaterial(new TrustSelfSignedStrategy()).build();
+//        } catch (NoSuchAlgorithmException  e){
+//            logger.error(e);
+//        } catch (KeyStoreException e){
+//            logger.error(e);
+//        } catch (KeyManagementException e){
+//            logger.error(e);
+//        }
+//        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+//        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
 
 
 //        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build()));
 //        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory().SocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build()));
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLSocketFactory(sslConnectionSocketFactory)
-                .build();
+//        CloseableHttpClient httpClient = HttpClients.custom()
+//                .setSSLSocketFactory(sslConnectionSocketFactory)
+//                .build();
 
         HttpGet request = new HttpGet(this.backendUrl + url);
         request.addHeader("Accept", "application/json");

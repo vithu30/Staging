@@ -67,10 +67,11 @@ public class HttpHandler {
 
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
 ////        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
         String path = "/home/vithursa/server.p12";
         String password = "ballerina";
-        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        KeyStore keyStore = KeyStore.getInstance("jks");
         InputStream inputStream = new FileInputStream(path);
         keyStore.load(inputStream,password.toCharArray());
         httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()

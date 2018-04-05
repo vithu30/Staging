@@ -74,7 +74,9 @@ public class HttpHandler {
         keyStore.load(inputStream,password.toCharArray());
         httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
                 .loadTrustMaterial(keyStore,null).build()));
-        CloseableHttpClient httpClient = httpClientBuilder.build();
+
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build())).build();
+//        CloseableHttpClient httpClient = httpClientBuilder.build();
 //        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyReader.getTrustStoreFile());
 //        KeyStore keyStore = KeyStore.getInstance("jks");
 //        keyStore.load(inputStream,trustStorePassword.toCharArray());

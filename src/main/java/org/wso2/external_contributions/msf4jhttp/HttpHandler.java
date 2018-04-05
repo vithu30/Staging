@@ -50,44 +50,19 @@ import javax.net.ssl.SSLContext;
  */
 public class HttpHandler {
     private static final Logger logger = Logger.getLogger(HttpHandler.class);
+    private static final PropertyReader propertyReader = new PropertyReader();
     private String backendPassword;
     private String backendUsername;
     private String backendUrl;
+    private String trustStorePassword;
 
 
     public HttpHandler() {
-        PropertyReader propertyReader = new PropertyReader();
         this.backendPassword = propertyReader.getBackendPassword();
         this.backendUsername = propertyReader.getBackendUsername();
         this.backendUrl = propertyReader.getBackendUrl();
+        this.trustStorePassword = propertyReader.getTrustStorePassword();
     }
-
-//    public String get(String url) {
-//        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-//        HttpGet request = new HttpGet(this.backendUrl + url);
-//        request.addHeader("Accept", "application/json");
-//        String encodedCredentials = this.encode(this.backendUsername + ":" + this.backendPassword);
-//        request.addHeader("Authorization", "Basic " + encodedCredentials);
-//        String responseString = null;
-//
-//        try {
-//
-//            HttpResponse response = httpClient.execute(request);
-//            if (logger.isDebugEnabled()) {
-//                logger.debug("Request successful for " + url);
-//            }
-//            responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-//
-//        } catch (IllegalStateException e) {
-//            logger.error("The response is empty ");
-//        } catch (NullPointerException e) {
-//            logger.error("Bad request to the URL");
-//        } catch (IOException e) {
-//            logger.error("mke");
-//        }
-//
-//        return responseString;
-//    }
 
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
 //        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
@@ -97,6 +72,9 @@ public class HttpHandler {
 //        KeyStore keyStore = KeyStore.getInstance("jks");
 //        InputStream inputStream = new FileInputStream(path);
 //        keyStore.load(inputStream,password.toCharArray());
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyReader.getTrustStoreFile());
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(inputStream,trustStorePassword.toCharArray());
 
         SSLContext sslContext = null;
         try{

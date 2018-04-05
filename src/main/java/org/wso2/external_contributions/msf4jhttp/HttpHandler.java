@@ -69,15 +69,24 @@ public class HttpHandler {
 ////        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-        String path = "/home/vithursa/server.p12";
-        String password = "ballerina";
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        InputStream inputStream = new FileInputStream(path);
-        keyStore.load(inputStream,password.toCharArray());
+
+        InputStream file = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream(propertyReader.getTrustStoreFile());
+        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        //loading key store with password
+        keyStore.load(file, propertyReader.getTrustStorePassword().toCharArray());
+        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+
+
+//        String path = "/home/vithursa/server.p12";
+//        String password = "ballerina";
+//        KeyStore keyStore = KeyStore.getInstance("jks");
+//        InputStream inputStream = new FileInputStream(path);
+//        keyStore.load(inputStream,password.toCharArray());
+
         httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom()
                 .loadTrustMaterial(keyStore,null).build()));
 
-        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build())).build();
 //        CloseableHttpClient httpClient = httpClientBuilder.build();
 //        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyReader.getTrustStoreFile());
 //        KeyStore keyStore = KeyStore.getInstance("jks");
@@ -97,8 +106,10 @@ public class HttpHandler {
 //        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
 
 
-//        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build()));
-//        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory().SocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build()));
+
+        httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build(),allowAllHosts));
+        CloseableHttpClient httpClient = httpClientBuilder.build();
+//  httpClientBuilder.setSSLSocketFactory(new SSLConnectionSocketFactory().SocketFactory(SSLContexts.custom().loadTrustMaterial(keyStore,null).build()));
 //        CloseableHttpClient httpClient = HttpClients.custom()
 //                .setSSLSocketFactory(sslConnectionSocketFactory)
 //                .build();

@@ -21,10 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 public class Issues extends HttpServlet {
     private static final Logger logger = Logger.getLogger(Issues.class);
 
-
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-
         try {
             HttpHandler httpHandler  = new HttpHandler();
             logger.info("Request backend to fetch issues");

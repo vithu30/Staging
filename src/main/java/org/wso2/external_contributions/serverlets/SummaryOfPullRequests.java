@@ -1,7 +1,7 @@
 package org.wso2.external_contributions.serverlets;
 
 import org.apache.log4j.Logger;
-import org.wso2.external_contributions.msf4jhttp.HttpHandler;
+import org.wso2.external_contributions.httpClient.HttpHandler;
 
 import java.io.IOException;
 import java.security.KeyManagementException;

@@ -17,7 +17,7 @@
  *
  */
 
-package org.wso2.external_contributions.msf4jhttp;
+package org.wso2.external_contributions.httpClient;
 
 import org.apache.log4j.Logger;
 
@@ -98,9 +98,7 @@ public class PropertyReader {
         return this.backendPassword;
     }
 
-    public String getSsoKeyStoreName() {
-        return this.ssoKeyStoreName;
-    }
+    public String getSsoKeyStoreName() { return this.ssoKeyStoreName; }
 
     public String getSsoKeyStorePassword() {
         return this.ssoKeyStorePassword;

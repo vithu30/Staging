@@ -5,7 +5,7 @@ import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
 import org.apache.log4j.Logger;
-import org.wso2.external_contributions.msf4jhttp.PropertyReader;
+import org.wso2.external_contributions.httpClient.PropertyReader;
 
 import java.io.IOException;
 import java.io.InputStream;

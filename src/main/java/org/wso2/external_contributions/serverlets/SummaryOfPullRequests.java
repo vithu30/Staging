@@ -26,7 +26,7 @@ public class SummaryOfPullRequests extends HttpServlet {
         try {
             HttpHandler httpHandler  = new HttpHandler();
             logger.info("Request backend to fetch summary of pull requests");
-            String response = httpHandler.httpsGet("BallerinaService/summaryOfPullRequests");
+            String response = httpHandler.httpsGet("ballerinaService/summaryOfPullRequests");
             logger.info("Got: " + response);
             httpServletResponse.setContentType("application/json;charset=UTF-8");
             ServletOutputStream out = httpServletResponse.getOutputStream();

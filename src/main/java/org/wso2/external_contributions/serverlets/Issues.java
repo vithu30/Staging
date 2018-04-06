@@ -28,7 +28,7 @@ public class Issues extends HttpServlet {
         try {
             HttpHandler httpHandler  = new HttpHandler();
             logger.info("Request backend to fetch issues");
-            String response = httpHandler.httpsGet("BallerinaService/issues");
+            String response = httpHandler.httpsGet("ballerinaService/issues");
             logger.info("Got: " + response);
             httpServletResponse.setContentType("application/json;charset=UTF-8");
             ServletOutputStream out = httpServletResponse.getOutputStream();

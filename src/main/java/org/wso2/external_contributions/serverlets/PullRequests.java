@@ -27,7 +27,7 @@ public class PullRequests extends HttpServlet {
         try {
             HttpHandler httpHandler = new HttpHandler();
             logger.info("Requesting backend ");
-            String backResponse = httpHandler.httpsGet("/BallerinaService/pullRequests");
+            String backResponse = httpHandler.httpsGet("/ballerinaService/pullRequests");
             logger.info("Got: " + backResponse);
 //            response.setHeader("Access-Control-Allow-Origin", "*");
 //            response.setHeader("credentials", "same origin");

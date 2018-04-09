@@ -19,6 +19,7 @@
 
 package org.wso2.external_contributions.httpClient;
 
+import com.google.common.io.BaseEncoding;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
@@ -31,6 +32,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -46,9 +48,13 @@ public class HttpHandler {
     private static final Logger logger = Logger.getLogger(HttpHandler.class);
     private static final PropertyReader propertyReader = new PropertyReader();
     private String backendUrl;
+    private String backendUsername;
+    private String backendPassword;
 
     public HttpHandler() {
         this.backendUrl = propertyReader.getBackendUrl();
+        this.backendPassword = propertyReader.getBackendPassword();
+        this.backendUsername = propertyReader.getBackendUsername();
     }
 
     public String httpsGet(String url) throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
@@ -63,6 +69,8 @@ public class HttpHandler {
         CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory).build();
         HttpGet request = new HttpGet(this.backendUrl + url);
         request.addHeader("Accept", "application/json");
+        String encodedCredentials = this.encode(this.backendUsername + ":" + this.backendPassword);
+        request.addHeader("Authorization", "Basic " + encodedCredentials);
         String responseString = null;
 
         try {
@@ -79,5 +87,15 @@ public class HttpHandler {
             logger.error("mke");
         }
         return responseString;
+    }
+
+    private String encode(String text) {
+        String returnString = null;
+        try {
+            returnString = BaseEncoding.base64().encode(text.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return returnString;
     }
 }

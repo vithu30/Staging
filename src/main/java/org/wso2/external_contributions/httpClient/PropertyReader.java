@@ -43,7 +43,6 @@ public class PropertyReader {
     private String trustStoreFile;
     private String trustStorePassword;
 
-
     public PropertyReader() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(CONFIG_FILE);
         loadConfigs(inputStream);
@@ -68,7 +67,8 @@ public class PropertyReader {
             this.ssoRedirectUrl = prop.getProperty("sso_redirect_url");
             this.trustStoreFile = prop.getProperty("trust_store_file_name");
             this.trustStorePassword = prop.getProperty("trust_store_password");
-
+            this.backendPassword = prop.getProperty("backend_password");
+            this.backendUsername = prop.getProperty("backend_username");
 
         } catch (FileNotFoundException e) {
             logger.error("The configuration file is not found");

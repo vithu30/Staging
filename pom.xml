@@ -52,7 +52,7 @@
     </dependencies>
 
     <build>
-        <finalName>contribution_from_outsiders</finalName>
+        <finalName>GithubDashboard</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>

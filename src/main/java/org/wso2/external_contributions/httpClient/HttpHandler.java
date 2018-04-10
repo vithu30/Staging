@@ -64,8 +64,9 @@ public class HttpHandler {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         keyStore.load(file, propertyReader.getTrustStorePassword().toCharArray());
         SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(keyStore,null).build();
-        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,allowAllHosts);
+//        HostnameVerifier allowAllHosts = new NoopHostnameVerifier();
+
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext);
         CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory).build();
         HttpGet request = new HttpGet(this.backendUrl + url);
         request.addHeader("Accept", "application/json");
